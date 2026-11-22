@@ -738,6 +738,50 @@ body.dr-open #banner{bottom:84px}
 .wf-team.egy{color:#7a4fb5;background:#efe9f7}.wf-team.ksa{color:#0f6f6b;background:#e1f1ef}
 .wf-cd{font-size:11.5px;font-weight:700;border-radius:20px;padding:2px 9px;white-space:nowrap}
 .wf-cd.up{color:#7a4313;background:#fff1e3}.wf-cd.now{color:#fff;background:var(--ub-orange)}.wf-cd.done{color:#216b51;background:#ddefe5}.wf-cd.later{color:#7d909c;background:#eef2f5}
+/* ---------- الشاشة الرئيسية (الترتيب المعتمد): شريط ترحيب مضغوط + وصول سريع بسطر + عمودان ---------- */
+.hbar{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;padding:16px 20px!important}
+.hbar .who{display:flex;align-items:center;gap:12px;flex:1 1 260px;min-width:0}
+.hbar .av{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;background:#d9ebea;color:#07545c;font:700 19px "IBM Plex Sans Arabic",sans-serif;flex:none}
+.hbar h2{margin:0;font-size:19px;color:var(--ub-navy);line-height:1.3;border:0;padding:0}
+.hbar p{margin:0;color:var(--ub-muted);font-size:12.5px}
+.hstats{display:flex;gap:8px;flex-wrap:wrap}
+.hsc{--st:var(--ub-navy);display:flex;flex-direction:column;align-items:flex-start;min-width:112px;padding:8px 12px;border:1px solid var(--ub-line);border-radius:11px;background:#fff;cursor:pointer;font:inherit;text-align:start;color:inherit}
+.hsc:hover{border-color:#9cc3c0}
+.hsc b{font:700 20px "Inter",sans-serif;color:var(--st);line-height:1.2}
+.hsc span{font-size:11.5px;color:var(--ub-muted);font-weight:600}
+.hquick2{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.hqs{display:flex;align-items:center;gap:12px;padding:12px 14px!important;cursor:pointer;text-align:start;font:inherit;color:inherit;transition:box-shadow .15s,transform .15s}
+.hqs:hover{box-shadow:0 0 0 1px #62a7a6,var(--ub-shadow);transform:translateY(-1px)}
+.hqs .ic{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:#d9ebea;color:#07545c;flex:none}
+.hqs b{display:block;color:var(--ub-navy);font-size:13.5px;line-height:1.3}
+.hqs small{color:var(--ub-muted);font-size:12px}
+.hclear{display:flex;align-items:center;gap:12px;margin:4px 18px 10px;padding:12px 14px;border-radius:12px;background:#e9f5ef;color:#1c5a43}
+.hclear .ok{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#cfe9dc;color:#216b51;flex:none}
+.hclear b{display:block;color:#164d39}
+.hclear span{font-size:12.5px}
+.hsug{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 18px 16px}
+.hsg{display:flex;flex-direction:column;gap:4px;align-items:flex-start;text-align:start;padding:12px;border:1px dashed #bcd2d0;border-radius:11px;background:#fff;cursor:pointer;font:inherit;color:inherit}
+.hsg:hover{border-style:solid;border-color:#62a7a6}
+.hsg svg{color:#07545c}
+.hsg b{color:var(--ub-navy);font-size:13px}
+.hsg small{color:var(--ub-muted);font-size:11.5px}
+.hperf{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:0 18px 12px}
+.hpf{border:1px solid var(--ub-line);border-radius:11px;background:#fff;padding:10px 12px}
+.hpf b{display:block;font:700 22px "Inter",sans-serif;color:var(--ub-navy);line-height:1.2}
+.hpf b em{font-style:normal;font:600 11px "Inter",sans-serif;color:#216b51;margin-inline-start:4px}
+.hpf span{font-size:11.5px;color:var(--ub-muted);font-weight:600}
+.hbars{padding:0 18px 8px;display:flex;flex-direction:column;gap:8px}
+.hbr{display:grid;grid-template-columns:140px 1fr 40px;gap:10px;align-items:center;font-size:12.5px}
+.hbr .tr{height:7px;border-radius:7px;background:#e6edf0;overflow:hidden}
+.hbr .tr i{display:block;height:100%;border-radius:7px;background:#168389}
+.hbr .tr i.w{background:#d8893f}
+.hbr span:last-child{font:600 12px "Inter",sans-serif;color:var(--ub-muted);text-align:end}
+.hnote{font-size:12px;color:var(--ub-muted);margin:4px 18px 14px}
+.home .hgrid{grid-template-columns:minmax(0,1.45fr) minmax(0,1fr)}
+@media (max-width:760px){.hsug{grid-template-columns:1fr}.hperf{grid-template-columns:1fr 1fr}.hbr{grid-template-columns:110px 1fr 38px}.hstats{width:100%}.hsc{flex:1 1 40%;min-width:0}.hbar .btn{width:100%;justify-content:center}}
+/* مسافة بين شريط صندوق الوارد/الخطوة القادمة والبطاقات تحته */
+#inboxBox:not(:empty){margin-bottom:14px}
+#nextBox:not(:empty){margin-bottom:2px}
 </style>
 </head>
 <body>
@@ -1093,7 +1137,7 @@ const TR_EXACT = {
   "خطة العمل": "Monthly workflow",
   "آخر النشاط": "Recent activity",
   "ابدأ المراجعة": "Start reviewing",
-  "ابدأ بالأهم": "Start with the top task",
+  "ابدأ بالمهمة الأهم": "Start with the top task",
   "مهام مفتوحة": "open tasks",
   "مهمة مفتوحة": "open task",
   "عاجل": "Urgent",
@@ -1101,19 +1145,19 @@ const TR_EXACT = {
   "متابعة": "Follow-up",
   "حالات بانتظار اعتمادك": "Cases awaiting your approval",
   "اختيار أفضل المشاركات": "Pick best participations",
-  "حالات بصندوق الوارد ما انوزّعت": "Unassigned inbox cases",
+  "حالات في صندوق الوارد لم تُوزَّع": "Unassigned inbox cases",
   "وزّعها على المقيّمين": "Assign them to reviewers",
   "حالات معادة بانتظار تصحيح المقيّم": "Returned cases awaiting reviewer",
   "تابع مع المقيّمين": "Follow up with reviewers",
   "حالات معادة للتصحيح": "Cases returned for correction",
   "حالات مُسندة لك من الواتساب": "WhatsApp cases assigned to you",
   "ابدأ تقييمها": "Start evaluating",
-  "مسودات ما انبعتت": "Unsent drafts",
-  "كمّلها وأرسلها للاعتماد": "Finish and submit",
-  "حالات جديدة بصندوق الوارد": "New inbox cases",
-  "خذ حالة وقيّمها": "Take one and evaluate",
-  "ما في مهام مفتوحة الآن.": "No open tasks right now.",
-  "ما في نشاط بعد.": "No activity yet.",
+  "مسودات لم تُرسَل": "Unsent drafts",
+  "أكملها وأرسلها للاعتماد": "Finish and submit",
+  "حالات جديدة في صندوق الوارد": "New inbox cases",
+  "استلم حالة وقيّمها": "Take one and evaluate",
+  "لا توجد مهام مفتوحة حاليًا.": "No open tasks right now.",
+  "لا يوجد نشاط حتى الآن.": "No activity yet.",
   "السجل": "Log",
   "تراجع": "Undo",
   "صحّح الآن": "Fix now",
@@ -5384,7 +5428,7 @@ function homeTasks_(){
     if(canDo('approve.featured')){ const m=curMonth_(); const ap=V.filter(([id,c])=>c.month===m&&statusOf(id)==='Approved'); const f=ap.filter(([id])=>(S.dec.get(id)||{}).featured).length; const need=Math.max(0,Math.min(ap.length,nb)-f);
       if(need) T.push({g:'هذا الأسبوع',ic:'star',st:'ready',t:'اختيار أفضل المشاركات',s:'مختارة '+f+' من '+nb+' · '+monthLabel(m),n:need,due:due4,go:'posts'}); }
     if(canDo('imp.assign')||isAdminRole()){ const nw=(S.inbox||[]).filter(x=>x.status==='new').length;
-      if(nw) T.push({g:'هذا الأسبوع',ic:'inbox',st:'wait',t:'حالات بصندوق الوارد ما انوزّعت',s:'وزّعها على المقيّمين',n:nw,due:due1,go:'cases'}); }
+      if(nw) T.push({g:'هذا الأسبوع',ic:'inbox',st:'wait',t:'حالات في صندوق الوارد لم تُوزَّع',s:'وزّعها على المقيّمين',n:nw,due:due1,go:'cases'}); }
     const Rt=V.filter(([id])=>statusOf(id)==='Returned').length;
     if(Rt) T.push({g:'متابعة',ic:'undo',st:'na',t:'حالات معادة بانتظار تصحيح المقيّم',s:'تابع مع المقيّمين',n:Rt,go:'cases',f:'Returned'});
   } else {
@@ -5393,9 +5437,9 @@ function homeTasks_(){
     const tk=(S.inbox||[]).filter(x=>x.status==='taken'&&x.takenBy===S.me.id).length;
     if(tk) T.push({g:'عاجل',ic:'inbox',st:'pend',t:'حالات مُسندة لك من الواتساب',s:'ابدأ تقييمها',n:tk,due:due1,go:'cases'});
     const dr=Object.values(getDrafts()).filter(d=>!d.id).length;
-    if(dr) T.push({g:'هذا الأسبوع',ic:'file',st:'na',t:'مسودات ما انبعتت',s:'كمّلها وأرسلها للاعتماد',n:dr,go:'cases'});
+    if(dr) T.push({g:'هذا الأسبوع',ic:'file',st:'na',t:'مسودات لم تُرسَل',s:'أكملها وأرسلها للاعتماد',n:dr,go:'cases'});
     const nw=(S.inbox||[]).filter(x=>x.status==='new').length;
-    if(nw) T.push({g:'هذا الأسبوع',ic:'inbox',st:'ready',t:'حالات جديدة بصندوق الوارد',s:'خذ حالة وقيّمها',n:nw,go:'cases'});
+    if(nw) T.push({g:'هذا الأسبوع',ic:'inbox',st:'ready',t:'حالات جديدة في صندوق الوارد',s:'استلم حالة وقيّمها',n:nw,go:'cases'});
   }
   return T;
 }
@@ -5425,16 +5469,30 @@ function updateHome(){
   const cn=st=>VM.filter(([id])=>statusOf(id)===st).length;
   const m3=(adm?[['Pending','st-pend','بانتظار الاعتماد'],['Approved','st-ok','معتمدة'],['Returned','st-wait','معادة للتصحيح']]:[['Returned','st-wait','معادة للتصحيح'],['Pending','st-pend','بانتظار الاعتماد'],['Approved','st-ok','معتمدة']]);
   const first=T[0];
-  const btn=first?(first.review?'<button class="btn primary" data-hreview>'+ico_('check','sm')+' ابدأ المراجعة</button>':'<button class="btn primary" data-hgo="'+(first.go||'cases')+'" data-hst="'+(first.f||'')+'" data-hopen="'+(first.open||'')+'">'+ico_('check','sm')+' ابدأ بالأهم</button>'):'';
+  const btn=first?(first.review?'<button class="btn primary" data-hreview>'+ico_('check','sm')+' ابدأ المراجعة</button>':'<button class="btn primary" data-hgo="'+(first.go||'cases')+'" data-hst="'+(first.f||'')+'" data-hopen="'+(first.open||'')+'">'+ico_('check','sm')+' ابدأ بالمهمة الأهم</button>'):'';
   const task=t=>'<button class="htask st-'+t.st+'" type="button" '+(t.review?'data-hreview':'data-hgo="'+(t.go||'cases')+'" data-hst="'+(t.f||'')+'" data-hopen="'+(t.open||'')+'"')+'><span class="ti">'+ico_(t.ic)+'</span><span class="tt"><b>'+esc(t.t)+'</b><small>'+esc(t.s)+'</small></span>'+(t.due?'<span class="due">'+esc(t.due)+'</span>':'')+'<span class="n">'+t.n+'</span>'+ico_('chev','go')+'</button>';
-  const QA=tabsFor().filter(([k])=>k!=='home').map(([k,l])=>{ let v='',s='';
-    if(k==='cases'){ v=VM.length; s='حالة · '+monthLabel(m); }
-    else if(k==='posts'){ v=cn('Approved'); s='معتمدة هذا الشهر'; }
-    else if(k==='badges'){ v=activeBadges().length; s='شارات فعّالة'; }
-    else if(k==='dash'){ const dn=VM.filter(([id])=>statusOf(id)!=='Pending').length; v=dn?Math.round(cn('Approved')/dn*100)+'%':'—'; s='نسبة الاعتماد'; }
-    else if(k==='imp'){ v=(S.inbox||[]).filter(x=>x.status==='new').length; s='حالة جديدة بصندوق الوارد'; }
-    else if(k==='log'){ v=(S.users||[]).length||'—'; s='مستخدم'; }
-    return '<button class="hqt" type="button" data-hgo="'+k+'"><span class="ic">'+navIc_(k)+'</span><b>'+esc(l)+'</b><span><span class="k">'+v+'</span> <small>'+esc(s)+'</small></span></button>'; });
+  const QA=tabsFor().filter(([k])=>k!=='home').map(([k,l])=>{ let sub='';
+    if(k==='cases') sub=(adm?cn('Pending')+' بانتظار الاعتماد':VM.length+' حالة · '+monthLabel(m));
+    else if(k==='posts') sub=cn('Approved')+' معتمدة';
+    else if(k==='badges') sub=activeBadges().length+' شارات فعّالة';
+    else if(k==='dash'){ const dn=VM.filter(([id])=>statusOf(id)!=='Pending').length; sub=(dn?Math.round(cn('Approved')/dn*100)+'%':'—')+' نسبة الاعتماد'; }
+    else if(k==='imp') sub=(S.inbox||[]).filter(x=>x.status==='new').length+' جديدة في صندوق الوارد';
+    else if(k==='log') sub=((S.users||[]).length||'—')+' مستخدم';
+    return '<button class="panel hqs" type="button" data-hgo="'+k+'"><span class="ic">'+navIc_(k)+'</span><span><b>'+esc(l)+'</b><small>'+esc(sub)+'</small></span></button>'; });
+  /* أداء الشهر: أرقام + نسبة تحقق كل شارة في الحالات المعتمدة */
+  const AP=VM.filter(([id])=>statusOf(id)==='Approved'), dn=VM.filter(([id])=>statusOf(id)!=='Pending').length;
+  const bk={}; let metTot=0; AP.forEach(([id,c])=>{ const r=resultsOf(id,c); badgesIn(r).forEach(b=>{ const o=bk[b.key]||(bk[b.key]={name:b.name,m:0,n:0}); if(r[b.key]==='Met'){ o.m++; metTot++; } if(r[b.key]==='Met'||r[b.key]==='Not Met') o.n++; }); });
+  const feat=AP.filter(([id])=>(S.dec.get(id)||{}).featured).length, apPct=dn?Math.round(AP.length/dn*100):0;
+  const pf=(n,l,x)=>'<div class="hpf"><b>'+n+(x?'<em>'+x+'</em>':'')+'</b><span>'+l+'</span></div>';
+  const bars=Object.values(bk).filter(o=>o.n).map(o=>{ const p=Math.round(o.m/o.n*100); return '<div class="hbr"><span dir="auto">'+esc(o.name)+'</span><span class="tr"><i class="'+(p<50?'w':'')+'" style="width:'+Math.max(p,2)+'%"></i></span><span>'+p+'%</span></div>'; }).join('');
+  const perf='<section class="panel"><div class="hh"><span class="ic">'+ico_('dash')+'</span><h3>'+(adm?'ملخص ':'أدائي في ')+esc(monthLabel(m))+'</h3>'+(m!==(new Date().getFullYear()+'-'+String(new Date().getMonth()+1).padStart(2,'0'))?'<span class="mut">آخر شهر يحتوي على حالات</span>':'')+'</div>'+
+    '<div class="hperf">'+(adm?pf(VM.length,'حالة مقدّمة')+pf(AP.length,'معتمدة',dn?apPct+'%':'')+pf(cn('Pending'),'بانتظار القرار')+pf(cn('Returned'),'معادة'):pf(VM.length,'حالة قيّمتها')+pf(AP.length,'معتمدة',dn?apPct+'%':'')+pf(feat,'أفضل مشاركة')+pf(AP.length?(metTot/AP.length).toFixed(1):'—','متوسط الشارات'))+'</div>'+
+    (bars?'<div class="hbars">'+bars+'</div><p class="hnote">نسبة تحقق كل شارة في '+(adm?'الحالات المعتمدة':'حالاتك المعتمدة')+'، والأقل من 50% باللون البرتقالي'+(adm?'، وهي أولى فجوات التدريب':'')+'.</p>':'<p class="hnote">لا توجد حالات معتمدة في هذا الشهر بعد.</p>')+'</section>';
+  /* حالة «لا توجد مهام»: خطوات مقترحة بدل الفراغ */
+  const SG=adm?[['dash','dash','لوحة المتابعة','راجع مؤشرات الشهر والفجوات'],['posts','posts','بوستات الشهر','راجع البوستات المعتمدة'],['imp','imp','استيراد الواتساب','استخرج حالات المجموعات الجديدة']]
+    :[['new','plus','أضف حالة جديدة','من حالات فرعك هذا الشهر'],['cases','inbox','صندوق الوارد','تحقّق من وجود حالات جديدة من الواتساب'],['posts','posts','بوستات الشهر',cn('Approved')+' بوست معتمد']];
+  const clear='<div class="hclear"><span class="ok">'+ico_('check','sm')+'</span><div><b>لا توجد لديك مهام مفتوحة</b><span>'+(adm?'لا يوجد ما ينتظر قرارك الآن. إليك خطوات مقترحة:':'تمت مراجعة جميع حالاتك. إليك خطوات مقترحة للأيام القادمة:')+'</span></div></div>'+
+    '<div class="hsug">'+SG.filter(x=>x[0]==='new'||tabsFor().some(([k])=>k===x[0])).map(x=>'<button class="hsg" type="button" '+(x[0]==='new'?'data-hnew':'data-hgo="'+x[0]+'"')+'>'+(x[1]==='dash'||x[1]==='posts'||x[1]==='imp'?navIc_(x[1]):ico_(x[1]))+'<b>'+x[2]+'</b><small>'+esc(x[3])+'</small></button>').join('')+'</div>';
   const wf=workflow_();
   let feed=[];
   if(adm&&(S.audit||[]).length) feed=S.audit.slice(0,6).map(a=>{ const k=a.action; const st=k==='approved'?'st-ok':k==='rejected'?'st-no':(k==='returned'||k==='reopened')?'st-wait':k==='featured'?'st-ready':'st-pend'; const ic=k==='approved'?'check':k==='rejected'?'x':(k==='returned'||k==='reopened')?'undo':k==='featured'?'star':'file';
@@ -5442,19 +5500,22 @@ function updateHome(){
   else { feed=V.filter(([id,c])=>statusOf(id)!=='Pending').map(([id,c])=>{ const d=S.dec.get(id)||{}; return [id,c,d,d.approvedAt||d.changedAt||c.updatedAt||'']; }).sort((a,b)=>String(b[3]).localeCompare(String(a[3]))).slice(0,5).map(([id,c,d])=>{ const st=d.status;
     const ic=st==='Approved'?'check':st==='Rejected'?'x':'undo'; const cl=st==='Approved'?'st-ok':st==='Rejected'?'st-no':'st-wait';
     return '<div class="hfi '+cl+'"><span class="ni-w">'+ico_(ic,'sm')+'</span><span><b>'+esc(STATUS[st]?STATUS[st][0]:st)+' · <bdi dir="ltr">'+esc(id)+'</bdi></b><small>'+esc(st==='Returned'?(d.returnReason||'—'):st==='Rejected'?(d.rejectReason||'—'):(d.approverName||'')+(d.approvedAt?' · '+d.approvedAt:''))+'</small></span></div>'; }); }
-  box.innerHTML='<section class="panel hgreet"><div class="gt"><p class="hi">'+(h<12?'صباح الخير':'مساء الخير')+'، '+esc(S.me.name||'')+'</p><p class="sub">'+esc(ROLE_NAMES[S.me.role]||'')+(dt?' · '+esc(dt):'')+'</p><div class="row"><div class="big">'+T.length+'<small>'+(T.length===1?'مهمة مفتوحة':'مهام مفتوحة')+'</small></div>'+btn+'</div></div>'+
-    '<div class="m3">'+m3.map(x=>'<button class="m3b '+x[1]+'" type="button" data-hgo="cases" data-hst="'+x[0]+'"><b>'+cn(x[0])+'</b><span>'+x[2]+' · '+esc(monthLabel(m))+'</span></button>').join('')+'</div></section>'+
-   '<div class="hgrid"><section class="panel"><div class="hh"><span class="ic">'+ico_('target')+'</span><h3>مهامي المفتوحة</h3><span class="mut">مرتبة حسب الأولوية</span></div>'+
-     (T.length?groups.map(g=>'<div class="hgrp">'+g+'</div>'+T.filter(t=>t.g===g).map(task).join('')).join(''):'<div class="hdone">'+ico_('check')+' ما في مهام مفتوحة الآن.</div>')+'</section>'+
-    '<div class="hcol"><section class="panel"><div class="hh"><span class="ic">'+navIc_('more')+'</span><h3>وصول سريع</h3></div><div class="hquick">'+QA.join('')+'</div></section>'+
-     '<section class="panel"><div class="hh"><span class="ic">'+ico_('clock')+'</span><h3>خطة العمل</h3><span class="mut">'+esc(wf.title)+'</span></div>'+wf.html+'</section>'+
-     '<section class="panel"><div class="hh"><span class="ic">'+ico_('clock')+'</span><h3>آخر النشاط</h3></div><div class="hfeed">'+(feed.length?feed.join(''):'<p class="note" style="margin:6px 0 10px">ما في نشاط بعد.</p>')+'</div></section></div></div>';
+  const stats=(adm?[['','مهام مفتوحة',T.length,''],['Pending','بانتظار الاعتماد',cn('Pending'),'st-pend'],['Approved','معتمدة في '+monthLabel(m).split(' ')[0],cn('Approved'),'st-ok'],['Returned','معادة للتصحيح',cn('Returned'),'st-wait']]
+    :[['','مهام مفتوحة',T.length,''],['all','حالاتي في '+monthLabel(m).split(' ')[0],VM.length,''],['Approved','معتمدة',cn('Approved'),'st-ok'],['Returned','معادة للتصحيح',cn('Returned'),'st-wait']]);
+  const btn2=first?btn:(adm?'':'<button class="btn primary" type="button" data-hnew>'+ico_('plus','sm')+' حالة جديدة</button>');
+  box.innerHTML='<section class="panel hbar"><div class="who"><span class="av">'+esc(String(S.me.name||'?').trim().charAt(0)||'?')+'</span><div><h2>'+(h<12?'صباح الخير':'مساء الخير')+'، '+esc(S.me.name||'')+'</h2><p>'+esc(ROLE_NAMES[S.me.role]||'')+(dt?' · '+esc(dt):'')+'</p></div></div>'+
+    '<div class="hstats">'+stats.map(x=>'<button class="hsc '+x[3]+'" type="button" '+(x[0]?'data-hgo="cases" data-hst="'+x[0]+'"':'data-htasks')+'><b>'+x[2]+'</b><span>'+esc(x[1])+'</span></button>').join('')+'</div>'+btn2+'</section>'+
+   '<div class="hquick2">'+QA.join('')+'</div>'+
+   '<div class="hgrid"><div class="hcol"><section class="panel" id="hTasks"><div class="hh"><span class="ic">'+ico_('target')+'</span><h3>مهامي المفتوحة</h3>'+(T.length?'<span class="mut">مرتبة حسب الأولوية</span>':'')+'</div>'+
+     (T.length?groups.map(g=>'<div class="hgrp">'+g+'</div>'+T.filter(t=>t.g===g).map(task).join('')).join(''):clear)+'</section>'+perf+'</div>'+
+    '<div class="hcol"><section class="panel"><div class="hh"><span class="ic">'+ico_('clock')+'</span><h3>خطة العمل</h3><span class="mut">'+esc(wf.title)+'</span></div>'+wf.html+'</section>'+
+     '<section class="panel"><div class="hh"><span class="ic">'+ico_('clock')+'</span><h3>آخر النشاط</h3></div><div class="hfeed">'+(feed.length?feed.join(''):'<p class="note" style="margin:6px 0 10px">لا يوجد نشاط حتى الآن.</p>')+'</div></section></div></div>';
 }
 function nextBoxRender_(){ const b=$('#nextBox'); if(!b) return; const V=visibleCases();
   if(adminMode()&&canDo('approve.decide')){ const P=V.filter(([id])=>statusOf(id)==='Pending'&&!DEC_Q.has(id)); if(!P.length){ b.innerHTML=''; return; } const R=P.filter(([id,c])=>isReady(id,c)).length;
-    b.innerHTML='<section class="panel nextc st-pend"><span class="ic">'+ico_('clock')+'</span><div class="tx"><b>عندك '+P.length+' '+(P.length===1?'حالة':'حالات')+' بانتظار الاعتماد</b><span>'+(R?'منها '+R+' جاهزة. ':'')+'افتح الأولى وتنقّل بينها بالأسهم، وقرّر بـ A (اعتماد) أو R (إعادة).</span></div><button class="btn primary" type="button" data-hreview>'+ico_('check','sm')+' ابدأ المراجعة</button></section>'; return; }
+    b.innerHTML='<section class="panel nextc st-pend"><span class="ic">'+ico_('clock')+'</span><div class="tx"><b>لديك '+P.length+' '+(P.length===1?'حالة':'حالات')+' بانتظار الاعتماد</b><span>'+(R?'منها '+R+' جاهزة. ':'')+'افتح الحالة الأولى وتنقّل بين الحالات بالأسهم، واتخذ القرار بالمفتاح A (اعتماد) أو R (إعادة).</span></div><button class="btn primary" type="button" data-hreview>'+ico_('check','sm')+' ابدأ المراجعة</button></section>'; return; }
   if(!adminMode()){ const mine=V.filter(([id,c])=>statusOf(id)==='Returned'&&c.reviewerId===S.me.id); if(!mine.length){ b.innerHTML=''; return; } const r=(S.dec.get(mine[0][0])||{}).returnReason||'';
-    b.innerHTML='<section class="panel nextc st-wait"><span class="ic">'+ico_('undo')+'</span><div class="tx"><b>عندك '+mine.length+' '+(mine.length===1?'حالة معادة':'حالات معادة')+' للتصحيح</b><span>'+(r?'ملاحظة المعتمد: «'+esc(r)+'»':'صحّحها وأرسلها مرة ثانية للاعتماد.')+'</span></div><button class="btn primary" type="button" data-open="'+esc(mine[0][0])+'">'+ico_('undo','sm')+' صحّح الآن</button></section>'; return; }
+    b.innerHTML='<section class="panel nextc st-wait"><span class="ic">'+ico_('undo')+'</span><div class="tx"><b>لديك '+mine.length+' '+(mine.length===1?'حالة معادة':'حالات معادة')+' للتصحيح</b><span>'+(r?'ملاحظة المعتمد: «'+esc(r)+'»':'صحّحها وأعد إرسالها للاعتماد.')+'</span></div><button class="btn primary" type="button" data-open="'+esc(mine[0][0])+'">'+ico_('undo','sm')+' صحّح الآن</button></section>'; return; }
   b.innerHTML='';
 }
 /* ---------- اللوحة الجانبية ---------- */
@@ -5473,7 +5534,7 @@ function drLog_(id,c,dec){
     if(dec.featured) E.push({st:'st-ready',ic:'star',t:'اختيار لبوست الشهر',s:''});
   }
   const q=DEC_Q.get(id); if(q) E.push({st:'st-pend',ic:'clock',t:(q.kind==='approve'?'اعتماد':q.kind==='reject'?'رفض':'إعادة للمقيّم للتصحيح')+' (جارٍ الحفظ)',s:(S.me.name||'')+' · الآن',n:q.reason||''});
-  return E.length?'<div class="tl">'+E.map(e=>'<div class="ev '+e.st+'"><span class="dt">'+ico_(e.ic,'sm')+'</span><b>'+esc(e.t)+'</b>'+(e.s?'<small>'+esc(e.s)+'</small>':'')+(e.n?'<div class="nq">'+esc(e.n)+'</div>':'')+'</div>').join('')+'</div>':'<p class="note">ما في سجل لهذه الحالة بعد.</p>';
+  return E.length?'<div class="tl">'+E.map(e=>'<div class="ev '+e.st+'"><span class="dt">'+ico_(e.ic,'sm')+'</span><b>'+esc(e.t)+'</b>'+(e.s?'<small>'+esc(e.s)+'</small>':'')+(e.n?'<div class="nq">'+esc(e.n)+'</div>':'')+'</div>').join('')+'</div>':'<p class="note">لا يوجد سجل لهذه الحالة حتى الآن.</p>';
 }
 function drRender_(){
   const id=S.drId, c=id&&S.cases.get(id); if(!c){ drClose_(); return; }
@@ -5518,7 +5579,7 @@ function drDecide_(kind){
   const L=drList_(), i=L.indexOf(id); const nx=L.slice(i+1).concat(L.slice(0,Math.max(0,i))).find(x=>statusOf(x)==='Pending'&&!DEC_Q.has(x));
   const lbl=kind==='approve'?'اعتُمدت':kind==='reject'?'رُفضت':'أُعيدت للتصحيح';
   if(nx){ S.drId=nx; S.drTab='sum'; drRender_(); } else drClose_();
-  undoToast_('✔ '+lbl+' الحالة '+id+(nx?' · فتحنا الحالة الجاية':' · خلصت الحالات المعلّقة'));
+  undoToast_('✔ '+lbl+' الحالة '+id+(nx?' · فُتحت الحالة التالية':' · لا توجد حالات معلّقة أخرى'));
   onData();
 }
 async function decSend_(id){
@@ -5543,6 +5604,8 @@ function v2Click_(t){
   if(t.id==='btnUndoDec'){ decUndo_(); return true; }
   if(t.dataset.hreview!==undefined){ const L=filteredCases().filter(([id])=>statusOf(id)==='Pending'&&!DEC_Q.has(id)); const P=L.length?L:visibleCases().filter(([id])=>statusOf(id)==='Pending'&&!DEC_Q.has(id)); const rd=P.find(([id,c])=>isReady(id,c))||P[0];
     if(S.view!=='cases'){ S.filters.status='Pending'; go('cases'); } if(rd) drOpen_(rd[0]); return true; }
+  if(t.dataset.hnew!==undefined){ go('cases'); openCase(null); return true; }
+  if(t.dataset.htasks!==undefined){ const x=$('#hTasks'); if(x) x.scrollIntoView({behavior:'smooth',block:'start'}); return true; }
   if(t.dataset.hgo!==undefined){ const v=t.dataset.hgo; if(v==='cases'){ S.filters.status=t.dataset.hst||'all'; } go(v); if(t.dataset.hopen) openCase(t.dataset.hopen); return true; }
   if(t.dataset.drtab){ S.drTab=t.dataset.drtab; drRender_(); return true; }
   const a=t.dataset.dract; if(!a) return false;
@@ -6936,7 +6999,7 @@ function bqSet(el){
 document.addEventListener('click',e=>{
   const t=e.target.closest('button,tr[data-open],tr[data-draft],a[data-openbest],img[data-impview]'); if(!t) return;
   if(t.id==='btnLang'){ S.lang=isEn()?'ar':'en'; lsSet('use_lang',S.lang); applyLang(); document.querySelectorAll('th[data-impsort]').forEach(th=>delete th.dataset.lbl); S.postsSig=''; if(!S.me.id){ if($('#suPin')) showSetup(''); else showLogin(''); } else { renderShell(); mount(); } return; }
-  if(t.closest('#drw')||t.dataset.hgo!==undefined||t.id==='btnUndoDec'||t.dataset.hreview!==undefined){ if(v2Click_(t)) return; }
+  if(t.closest('#drw')||t.dataset.hgo!==undefined||t.dataset.hnew!==undefined||t.dataset.htasks!==undefined||t.id==='btnUndoDec'||t.dataset.hreview!==undefined){ if(v2Click_(t)) return; }
   if(t.id==='btnPin'){ lsSet('use_side_pin',lsGet('use_side_pin')==='1'?'':'1'); pinApply_(); t.blur(); return; }
   if(t.id==='bnMore'){ document.body.classList.toggle('side-open'); return; }
   if(t.dataset.tab){ document.body.classList.remove('side-open'); if(t.closest('#side')) document.body.classList.add('nohover'); return go(t.dataset.tab); }
