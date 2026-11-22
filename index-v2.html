@@ -718,6 +718,26 @@ html[dir=ltr] #banner .undo-t .ut{transform-origin:left}
 @media (prefers-reduced-motion:reduce){.drw{transition:none}.drw .saving i,#banner .undo-t .ut{animation:none}}
 @media (max-width:760px){.drw{width:100vw}.drw .kv{grid-template-columns:1fr 1fr}.drw .keys{display:none}.drw .df .btn{flex:1}}
 body.dr-open #banner{bottom:84px}
+/* ---------- بطاقة «خطة العمل»: خط زمني عمودي بتواريخ كاملة ---------- */
+.wf-lead{margin:0 18px 10px;padding:10px 12px;border-radius:10px;background:#fff4ea;color:#7a4313;font-size:13px;display:flex;gap:8px;align-items:center}
+.wf-lead b{color:var(--ub-orange)}
+.wf-lead.now{background:#d9ebea;color:#0b4f52}.wf-lead.now b{color:#07545c}
+.wf{list-style:none;margin:0;padding:4px 18px 14px}
+.wf li{display:grid;grid-template-columns:52px 1fr auto;gap:12px;align-items:center;padding:8px 0;position:relative}
+.wf li+li::before{content:"";position:absolute;inset-inline-start:25px;top:-8px;height:16px;width:2px;background:#dfe7eb}
+.wf-dt{width:52px;border-radius:10px;border:1px solid var(--ub-line);background:#fff;text-align:center;padding:4px 0 3px;line-height:1.1}
+.wf-dt b{display:block;font:700 18px "Inter",sans-serif;color:var(--ub-navy)}
+.wf-dt small{display:block;font-size:10.5px;color:#7d909c;font-weight:600}
+.wf li.now .wf-dt{border-color:var(--ub-orange);background:#fff7f0;box-shadow:0 0 0 3px #ffe6cf}
+.wf li.done .wf-dt{opacity:.6}
+.wf-st{min-width:0}
+.wf-st b{display:block;color:var(--ub-navy);font-weight:600}
+.wf-st .sub{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:2px;font-size:12px;color:var(--ub-muted)}
+.wf-team{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;border-radius:20px;padding:1px 8px;white-space:nowrap}
+.wf-team::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.wf-team.egy{color:#7a4fb5;background:#efe9f7}.wf-team.ksa{color:#0f6f6b;background:#e1f1ef}
+.wf-cd{font-size:11.5px;font-weight:700;border-radius:20px;padding:2px 9px;white-space:nowrap}
+.wf-cd.up{color:#7a4313;background:#fff1e3}.wf-cd.now{color:#fff;background:var(--ub-orange)}.wf-cd.done{color:#216b51;background:#ddefe5}.wf-cd.later{color:#7d909c;background:#eef2f5}
 </style>
 </head>
 <body>
@@ -5379,6 +5399,24 @@ function homeTasks_(){
   }
   return T;
 }
+function workflow_(){
+  const today=new Date(); today.setHours(0,0,0,0); const d=today.getDate(), en=isEn();
+  const MA=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'], ME=['January','February','March','April','May','June','July','August','September','October','November','December'], MN=en?ME:MA;
+  const base=new Date(today.getFullYear(),today.getMonth()-(d<=10?1:0),1);
+  const ST=[['الاختيار','Selection','egy',25,0,1,1],['المراجعة الأولية','Initial review','ksa',2,1,2,1],['الاعتماد','Approval','ksa',4,1,4,1],['التصميم','Design','egy',4,1,8,1],['المراجعة النهائية','Final review','ksa',8,1,8,1],['الإرسال للنشر','Send for publishing','ksa',10,1,10,1]];
+  const tn=t=>en?(t==='egy'?'EGY Team':'KSA Team'):(t==='egy'?'فريق مصر':'فريق السعودية');
+  const S2=ST.map(s=>({n:en?s[1]:s[0],t:s[2],a:new Date(base.getFullYear(),base.getMonth()+s[4],s[3]),b:new Date(base.getFullYear(),base.getMonth()+s[6],s[5])}));
+  const dd=x=>Math.round((x-today)/864e5), fmt=x=>en?x.getDate()+' '+ME[x.getMonth()]:x.getDate()+' '+MA[x.getMonth()];
+  S2.forEach(s=>{ s.st=dd(s.b)<0?'done':dd(s.a)<=0?'now':'up'; s.left=dd(s.a); }); const up=S2.find(s=>s.st==='up'); S2.forEach(s=>{ if(s.st==='up'&&s!==up) s.st='later'; });
+  const left=n=>en?(n===1?'Tomorrow':'In '+n+' days'):(n===1?'غداً':n===2?'بعد يومين':'بعد '+n+(n<=10?' أيام':' يومًا'));
+  const now=S2.find(s=>s.st==='now');
+  const lead=now?'<p class="wf-lead now">'+ico_('clock','sm')+'<span>'+(en?'Now: ':'الآن: ')+'<b>'+esc(now.n)+'</b> · '+tn(now.t)+(now.a<now.b?(en?' · until ':' · لغاية ')+fmt(now.b):'')+'</span></p>'
+    :up?'<p class="wf-lead">'+ico_('clock','sm')+'<span>'+(en?'Next step: ':'الخطوة القادمة: ')+'<b>'+esc(up.n)+'</b> '+left(up.left)+' ('+fmt(up.a)+')</span></p>':'';
+  const chip=s=>s.st==='done'?'<span class="wf-cd done">✓ '+(en?'Done':'انتهت')+'</span>':s.st==='now'?'<span class="wf-cd now">'+(en?'Now':'الآن')+'</span>':'<span class="wf-cd '+s.st+'">'+left(s.left)+'</span>';
+  const html=lead+'<ol class="wf">'+S2.map(s=>{ const rng=s.a.getTime()!==s.b.getTime();
+    return '<li class="'+s.st+'"><span class="wf-dt"><b>'+s.a.getDate()+'</b><small>'+MN[s.a.getMonth()]+'</small></span><span class="wf-st"><b>'+esc(s.n)+'</b><span class="sub"><span class="wf-team '+s.t+'">'+tn(s.t)+'</span>'+(rng?'<span>'+(en?'From '+fmt(s.a)+' until '+fmt(s.b):'من '+fmt(s.a)+' لغاية '+fmt(s.b))+'</span>':'')+'</span></span>'+chip(s)+'</li>'; }).join('')+'</ol>';
+  return {html,title:(en?'Plan for ':'خطة عمل ')+MN[base.getMonth()]};
+}
 function mountHome(){ $('#main').innerHTML='<div class="home" id="homeV"></div>'; updateHome(); }
 function updateHome(){
   const box=$('#homeV'); if(!box) return; const adm=adminMode(); const V=visibleCases(); const m=curMonth_(); const VM=V.filter(([id,c])=>c.month===m);
@@ -5397,9 +5435,7 @@ function updateHome(){
     else if(k==='imp'){ v=(S.inbox||[]).filter(x=>x.status==='new').length; s='حالة جديدة بصندوق الوارد'; }
     else if(k==='log'){ v=(S.users||[]).length||'—'; s='مستخدم'; }
     return '<button class="hqt" type="button" data-hgo="'+k+'"><span class="ic">'+navIc_(k)+'</span><b>'+esc(l)+'</b><span><span class="k">'+v+'</span> <small>'+esc(s)+'</small></span></button>'; });
-  const cy=cycleNow_();
-  const cyc='<ol class="hcyc">'+[0,1,2,3,4,5].map(i=>{ const c=CYCLE[i]; return '<li class="'+(cy.i>i?'done':cy.i===i?'now':'')+'"><span class="d"></span><span class="dy">'+esc(c[0])+'</span><span>'+esc(c[1])+'</span><span class="tm">'+esc(c[2])+'</span></li>'; }).join('')+'</ol>'+
-   '<p class="hcnote">'+(cy.i>=0?'المرحلة الحالية: <b>'+esc(CYCLE[cy.i][1])+'</b>':'الاختيار يبدأ <b>بعد '+cy.left+' '+(cy.left===1?'يوم':cy.left<=10?'أيام':'يومًا')+'</b> (25 من الشهر)')+'</p>';
+  const wf=workflow_();
   let feed=[];
   if(adm&&(S.audit||[]).length) feed=S.audit.slice(0,6).map(a=>{ const k=a.action; const st=k==='approved'?'st-ok':k==='rejected'?'st-no':(k==='returned'||k==='reopened')?'st-wait':k==='featured'?'st-ready':'st-pend'; const ic=k==='approved'?'check':k==='rejected'?'x':(k==='returned'||k==='reopened')?'undo':k==='featured'?'star':'file';
     return '<div class="hfi '+st+'"><span class="ni-w">'+ico_(ic,'sm')+'</span><span><b>'+esc(ACT_AR[k]||k)+(a.caseId?' · <bdi dir="ltr">'+esc(a.caseId)+'</bdi>':'')+'</b><small>'+esc(a.byName||'—')+' · '+esc(ts_(a.ts))+'</small></span></div>'; });
@@ -5411,7 +5447,7 @@ function updateHome(){
    '<div class="hgrid"><section class="panel"><div class="hh"><span class="ic">'+ico_('target')+'</span><h3>مهامي المفتوحة</h3><span class="mut">مرتبة حسب الأولوية</span></div>'+
      (T.length?groups.map(g=>'<div class="hgrp">'+g+'</div>'+T.filter(t=>t.g===g).map(task).join('')).join(''):'<div class="hdone">'+ico_('check')+' ما في مهام مفتوحة الآن.</div>')+'</section>'+
     '<div class="hcol"><section class="panel"><div class="hh"><span class="ic">'+navIc_('more')+'</span><h3>وصول سريع</h3></div><div class="hquick">'+QA.join('')+'</div></section>'+
-     '<section class="panel"><div class="hh"><span class="ic">'+ico_('clock')+'</span><h3>خطة العمل</h3></div>'+cyc+'</section>'+
+     '<section class="panel"><div class="hh"><span class="ic">'+ico_('clock')+'</span><h3>خطة العمل</h3><span class="mut">'+esc(wf.title)+'</span></div>'+wf.html+'</section>'+
      '<section class="panel"><div class="hh"><span class="ic">'+ico_('clock')+'</span><h3>آخر النشاط</h3></div><div class="hfeed">'+(feed.length?feed.join(''):'<p class="note" style="margin:6px 0 10px">ما في نشاط بعد.</p>')+'</div></section></div></div>';
 }
 function nextBoxRender_(){ const b=$('#nextBox'); if(!b) return; const V=visibleCases();
