@@ -4574,7 +4574,7 @@ const PRAISE_RX=/ممتاز|برافو|براڤو|احسنت|أحسنت|الله
 // صيغة كتابة الحالة المعتمدة (United CX): الانطباع الأول / وصف الحالة …
 const CX_RX=/first\s*impression|1st\s*impression|united\s*cx|الانطباع\s*الا?ول|وصف\s*ال?حال|start\s*with/i;
 // أوزان جودة النص (تُرتّب الحالات داخل نفس مستوى الحل) — قابلة للتعديل من لوحة المتابعة ← معايرة الاختيار
-const SCORE_W_DEFAULT={routine:6,sci:4,cx:2,praise:2,l700:3,l1000:5,theme:4};
+const SCORE_W_DEFAULT={routine:6,sci:4,cx:4,praise:4,l700:1,l1000:2,theme:4};
 const SCORE_W_LABEL={routine:'كلمة روتين في النص',sci:'مكوّن علمي',cx:'صيغة CX',praise:'تفاعل/مدح من المشرف',l700:'نص 700–999 حرف',l1000:'نص 1000+ حرف',theme:'ضمن محور الشهر'};
 const CF={routine:1,sci:2,cx:4,praise:8,scan:16,l700:32,l1000:64,parsed:128,theme:256};
 function scoreW(){ const w=(S.settings&&S.settings.scoreW)||{}; const o={}; Object.keys(SCORE_W_DEFAULT).forEach(k=>{ o[k]=(k in w)?w[k]:SCORE_W_DEFAULT[k]; }); return o; }
@@ -4585,10 +4585,10 @@ const SOL_BANDS={4:[75,100],3:[55,74],2:[40,54],1:[20,39],0:[0,19]};
 const SOL_LBL={4:'أ · حل متكامل',3:'ب · 3 منتجات أو أكثر',2:'ج · أكمل الروتين مع العلاج (من النص)',1:'منتج أو منتجان',0:'بدون حل واضح'};
 const ROLE_LBL={clean:'غسول',moist:'مرطب',sun:'واقي',treat:'علاج'};
 const ROLE_DEFAULT={
-  sun:'spf|sun\\s*(secure|fluid|protect|screen|block|gel|cream|milk)|sunfluid|sunscreen|photoderm|anthelios|medisun|uv\\s*(mune|clear|defen|age)|solaire|واقي|صن\\s*بلوك|sunblock',
+  sun:'spf|sun\\s*(secure|fluid|protect|screen|block|gel|cream|milk)|sunfluid|sunscreen|photoderm|anthelios|anthel|\\bant\\s+(clean|uvmune|age|xl|shaka|dry|invisible)|x-?\\s*d[e]?f[e]?n[cs]e|medisun|uv\\s*(mune|clear|defen|age)|solaire|واقي|صن\\s*بلوك|sunblock',
   clean:'cleans|cleanser|wash|nettoy|moussant|foaming|\\bfoam\\b|micellar|\\bh2o\\b|syndet|lavante|purifiant\\s*bar|shower\\s*(gel|oil)|غسول|منظف|ميسيلار',
   treat:'serum|سيروم|\\bduo\\b|global\\s*acne|kerato|aklief|differin|adapal|skinoren|azelai|depi\\s*-?white|depiwhite|depigment|pigment|melamedic|retin|vitamin\\s*-?c|niacin|pore\\s*refiner|acne\\s*care|glyox|alpha\\s*plus|dark\\s*spot|urea|ampoule|concentrate|booster|treatment|sensibio\\s*(forte|ar|defensive)|rosaliac|redness|rougeur|anti-?red|fusid|fucid|elica|mometa|hydrocort|clindam|erythro|benzoyl|tretin|علاج|تفتيح',
-  moist:'moistur|hydra|hydrat|cream|\\bcr\\.|crème|creme|lotion|\\blot\\.|baume|balm|emoll|cicaplast|cicabio|lipikar|atoderm|topialyse|glysolid|matif|gel-?cr|مرطب|ترطيب'
+  moist:'moistur|hydra|hydrat|cream|\\bcr\\.|crème|creme|lotion|\\blot\\.|baume|balm|emoll|cicaplast|cicabio|lipikar|atoderm|topialyse|glysolid|mat+if|gel-?cr|مرطب|ترطيب'
 };
 const ORAL_RX=/\b(caps?|capsules?|tabs?|tablets?|softgel|sachets?|syrup|syrp|drops|eff\.?|effervescent|gumm(y|ies)|chew|amp\.|vials?|lozenges?|powder)\b/i;
 const ROLE_EXCL=/regaine|minoxidil|intimate|vaginal|nappy|oint|lubric|\blube\b|deo\b|roll[- ]?on|shampoo|\bsh\.|cond\.|hair|tooth|t\/p|t\/b|m\/wash|mouth|razor|condom|veet|h\/r|h\/rem|lip\s*balm|eye\s*drops|baby\s*(wash|oil)|tan\b|after\s*sun|mosquito|plaster|pants|diaper|pampers/i;
@@ -4603,8 +4603,12 @@ const TOPMED_RX=/fucid|fusid|fucicort|fucibet|elica|elocon|mometa|betam|betnovat
 function countsAsProduct_(x,role){ if(!x||NONPROD_RX.test(x)||MILK_DIAPER_RX.test(x)||TOPMED_RX.test(x)) return false; if(role) return true; if(SUPP_RX.test(x)) return true; if(MED_FORM_RX.test(x)) return false; return !ROLE_EXCL.test(x)||/shampoo|\bsh\.|hair|lip/i.test(x); }
 const SKIN_SUPP=/zinc|biotin|collagen|hyaluron|cystine|perfectil|oenobiol|priorin|glopriorin/i;
 function impRoles(){ const r=(S.settings&&S.settings.importRoles)||{}; const o={}; Object.keys(ROLE_DEFAULT).forEach(k=>{ o[k]=(r[k]&&String(r[k]).trim())||ROLE_DEFAULT[k]; }); return o; }
-function roleRx_(){ const R=impRoles(), key=JSON.stringify(R); if(S._roleRx&&S._roleRx.k===key) return S._roleRx.rx; const rx={}; Object.keys(R).forEach(k=>{ try{ rx[k]=new RegExp(R[k],'i'); }catch(e){ rx[k]=new RegExp(ROLE_DEFAULT[k],'i'); } }); S._roleRx={k:key,rx}; return rx; }
+const ROLE_EXTRA={sun:'anthel|\\bant\\s+(clean|uvmune|age|xl|shaka|dry|invisible)|x-?\\s*d[e]?f[e]?n[cs]e',moist:'mat+if'};
+function roleRx_(){ const R=impRoles(), key=JSON.stringify(R); if(S._roleRx&&S._roleRx.k===key) return S._roleRx.rx; const rx={}; Object.keys(R).forEach(k=>{ const v=R[k]+(ROLE_EXTRA[k]?'|'+ROLE_EXTRA[k]:''); try{ rx[k]=new RegExp(v,'i'); }catch(e){ rx[k]=new RegExp(ROLE_DEFAULT[k]+(ROLE_EXTRA[k]?'|'+ROLE_EXTRA[k]:''),'i'); } }); S._roleRx={k:key,rx}; return rx; }
 // دور منتج واحد من اسمه (الأولوية: واقي ← غسول ← علاج ← مرطب)
+// منتجات علاجية بقوام مرطّب تُحسب علاجًا ومرطبًا معًا
+const DUAL_TM_RX=/gel-?\s*cr(eam|\.|\b)|gel[\s-]*cr[eè]me|duo\s*\+?\s*\(?m\)?\b|\+\s*m\b|hydrating\s*treat/i;
+function rolesOf_(name){ const r=roleOf_(name); if(r==='treat'&&DUAL_TM_RX.test(String(name||''))) return ['treat','moist']; return r?[r]:[]; }
 function roleOf_(name){ const n=String(name||''); if(!n||ROLE_EXCL.test(n)||ORAL_RX.test(n)) return ''; const rx=roleRx_(); for(const k of ['sun','clean','treat','moist']) if(rx[k].test(n)) return k; return ''; }
 const VERIFY_RX=/(سألت|سالت|بسؤال|بالسؤال|استفسرت|سؤالي|سؤاله|سؤالها)[^.\n]{0,50}(روتين|يستخدم|تستخدم|بتستخدم|بيستخدم|تستعمل|يستعمل|بتستعمل|بيستعمل)|(تستخدم|يستخدم|بتستخدم|بيستخدم|تستعمل|يستعمل|بتستعمل|بيستعمل|عنده|عندها|لديه|لديها|معه|معها)[^.\n]{0,30}(غسول|مرطب|واقي|سيروم|روتين)|الروتين\s*الحالي|روتينه|روتينها|current\s*routine|already\s*(uses?|has|using)/i;
 const COMPLETE_RX=/(كمل|كملت|كمّل|كمّلت|أكمل|اكمل|أكملت|اكملت|استكمال|تكملة|تكميل|تكمله|نكمل)[^.\n]{0,50}(روتين|routine|الناقص|النواقص|الناقصة)|روتين\s*(كامل|متكامل|يومي)|full\s*routine|complete[ds]?\s*(the\s*)?routine|(ناقص|ناقصه|ناقصها|ينقصه|ينقصها|ما\s*عنده|ما\s*عندها|مش\s*مستخدم|لا\s*يستخدم|لا\s*تستخدم)[^.\n]{0,30}(غسول|مرطب|واقي|سيروم)/i;
@@ -4630,10 +4634,12 @@ function solOf_(c){
   const dom=domOf_(c); const names=invNames_(c); const t=String(c.text||'');
   const txtC=COMPLETE_RX.test(t)&&(VERIFY_RX.test(t)||TREAT_TXT_RX.test(t));
   const invKnown=names.length>0, pend=!invKnown&&c.aiFiles&&c.aiFiles.length>0; let lvl=0, est=false, n=0, main=0, add=0;
-  const roles={clean:0,moist:0,sun:0,treat:0}, hr={sham:0,treat:0,supp:0};
+  const roles={clean:0,moist:0,sun:0,treat:0}, hr={sham:0,treat:0,supp:0}; let fill='';
   if(dom==='skin'){
-    names.forEach(x=>{ const r=roleOf_(x); if(r) roles[r]++; if(countsAsProduct_(x,r)) n++; });
-    if(invKnown) lvl=(roles.clean&&roles.moist&&roles.sun&&roles.treat)?4:n>=3?3:n>=1?1:0;
+    names.forEach(x=>{ const rr=rolesOf_(x); rr.forEach(r=>{ roles[r]++; }); if(countsAsProduct_(x,rr[0]||'')) n++; });
+    if(invKnown){ lvl=(roles.clean&&roles.moist&&roles.sun&&roles.treat)?4:n>=3?3:n>=1?1:0;
+      // 1) أكمل الناقص: علاج + خطوتان أخريان، والنص يذكر أن الخطوة الناقصة موجودة عند العميل
+      if(lvl<4&&roles.treat){ const miss=['clean','moist','sun'].filter(k=>!roles[k]); if(miss.length===1&&hasStep_(t,miss[0])){ lvl=4; fill=miss[0]; } } }
     else if(pend){ const rx=roleRx_(), tr={}; ['sun','clean','treat','moist'].forEach(k=>{ if(rx[k].test(t)) tr[k]=1; }); const k=Object.keys(tr).length; lvl=k>=3?3:k>=1?1:0; est=true; Object.keys(tr).forEach(r=>{ roles[r]=1; }); }
   } else if(dom==='hair'){
     names.forEach(x=>{ if(NONPROD_RX.test(x)||MILK_DIAPER_RX.test(x)) return; const h=hairRole_(x); if(h) hr[h]++; if(TOPMED_RX.test(x)||/regaine|minox/i.test(x)) return; if(h||SUPP_RX.test(x)||!MED_FORM_RX.test(x)) n++; });
@@ -4646,8 +4652,12 @@ function solOf_(c){
     else if(pend){ const rx=roleRx_(); main=SUPP_RX.test(t)?1:0; add=['sun','clean','treat','moist'].some(k=>rx[k].test(t))?1:0; lvl=(main&&add)?3:(main||add)?1:0; est=true; }
   }
   if(lvl<2&&txtC) lvl=2;
-  return {lvl,roles,hr,n,main,add,dom,est,txtC,invKnown};
+  return {lvl,roles,hr,n,main,add,dom,est,txtC,invKnown,fill};
 }
+// هل يذكر النص أن الخطوة موجودة عند العميل؟ (مثل: «الواقي موجود عندها»، «تستخدم مرطب»، «لديها غسول»)
+const STEP_W={sun:'واقي|الواقي|صن\\s*بلوك|sun\\s*(screen|block|cream)|sunscreen|spf',moist:'مرطب|المرطب|كريم\\s*ترطيب|moisturi[sz]er',clean:'غسول|الغسول|منظف|cleanser|face\\s*wash'};
+const HAS_W='عند(ها|ه|هم|ي)?|لدي(ها|ه|هم)|موجود|موجوده|موجودة|متوفر|متوفره|متوفرة|متاح|معاها|معاه|معها|معه|بتستخدم|تستخدم|يستخدم|بيستخدم|تستعمل|يستعمل|بتستعمل|بيستعمل|مستخدم(ه|ة)?|already|has\\s+(a|her|his)?';
+function hasStep_(t,k){ const w=STEP_W[k]; if(!w) return false; try{ return new RegExp('('+HAS_W+')[^.\\n]{0,40}('+w+')|('+w+')[^.\\n]{0,40}('+HAS_W+')','i').test(String(t||'')); }catch(e){ return false; } }
 // محور الشهر: موضوع يحدده المسؤول لكل شهر، يعطي أولوية خفيفة داخل نفس مستوى الحل
 function themeOf_(m){ const v=((S.settings&&S.settings.themes)||{})[m]; if(!v) return null; const i=v.indexOf(':'); const kind=v.slice(0,i), name=v.slice(i+1); return {kind,name,label:name,key:v}; }
 function caseTheme_(c){ if(!c||!c.t) return null; const th=themeOf_(ymd_(new Date(c.t)).slice(0,7)); if(!th) return null; if(th.kind==='sub'&&subOf_(c).includes(th.name)) return th; if(th.kind==='cat'&&(c.cats||[]).includes(th.name)) return th; return null; }
@@ -4682,7 +4692,8 @@ function impScore(c,msgs){
     pr=msgs.some(m=>{ const d=m.t.getTime()-t0; if(d<=0||d>6*3600000||m.sender===c.sender||m.body.length>300||!PRAISE_RX.test(m.body)) return false; if(d<=15*60000) return true; const b=WA.normA(m.body); return toks.some(x=>b.includes(x)); }); }
   c.pr=pr; if(pr){ cf|=CF.praise; why.push('تفاعل/مدح من المشرف'); }
   const th=caseTheme_(c); c.th=th?1:0; if(th){ cf|=CF.theme; why.push('ضمن محور الشهر: '+th.label); }
-  const sc=scoreFrom_(sol.lvl,cf,tp,sig.length,W);
+  if(sol.fill) why.push('أكمل الناقص: '+ROLE_LBL[sol.fill]+' موجود عند العميل حسب النص');
+  let sc=scoreFrom_(sol.lvl,cf,tp,sig.length,W); if(sol.fill) sc=Math.max(SOL_BANDS[4][0],sc-4);
   c.score=Math.min(100,sc); c.raw=sc; c.cf=cf; c.tp=tp; c.tlen=L; c.sigs=sig; c.why=why;
   c.tier=sol.lvl>=3?3:sol.lvl===2?2:(sol.lvl===1&&c.score>=32?2:1);
 }
@@ -4700,12 +4711,13 @@ function impTopCatsUI(cats){ const I=impState(); I.topCats=I.topCats||new Set();
 }
 // ترتيب متوازن: بالتناوب على المجموعات (D1، D2، …)، وداخل كل مجموعة صيدلي مختلف قبل تكرار نفس الصيدلي
 function impBalanced_(list){ const byG={}; list.forEach(c=>{ (byG[c.group||'—']=byG[c.group||'—']||[]).push(c); });
-  Object.keys(byG).forEach(g=>{ const seen=new Set(), first=[], rest=[]; byG[g].forEach(c=>{ const k=WA.normA(cleanSender_(c.sender)); (seen.has(k)?rest:first).push(c); seen.add(k); }); byG[g]=first.concat(rest); });
+  const seenAll=new Set(); Object.keys(byG).forEach(g=>{ const first=[]; byG[g].forEach(c=>{ const k=WA.normA(cleanSender_(c.sender)); if(!seenAll.has(k)) first.push(c); seenAll.add(k); }); byG[g]=first; });
   const L=[]; for(;;){ const G=Object.keys(byG).filter(g=>byG[g].length).sort((a,b)=>byG[b][0].score-byG[a][0].score); if(!G.length) break; for(const g of G) L.push(byG[g].shift()); } return L; }
 // طريقة التوزيع على المجموعات: min = حد أدنى 3 لكل مجموعة (سكور 45+) والباقي للأعلى سكور، equal = بالتساوي، none = الأعلى سكور مباشرة
 const IMP_MIN_PER_G=3, IMP_MIN_SCORE=40; // 40 = بداية مستوى «ج»
-function impBalMode(){ try{ const v=localStorage.getItem('use_imp_bal'); if(v==='min'||v==='equal'||v==='none') return v; }catch(e){} return 'min'; }
-function impDistinct_(list){ const seen=new Set(), first=[], rest=[]; list.forEach(c=>{ const k=c.group+'|'+WA.normA(cleanSender_(c.sender)); (seen.has(k)?rest:first).push(c); seen.add(k); }); return first.concat(rest); }
+function impBalMode(){ try{ const v=localStorage.getItem('use_imp_bal2'); if(v==='min'||v==='equal'||v==='none') return v; }catch(e){} return 'none'; }
+// حالة واحدة فقط لكل صيدلي في الاقتراح (الأعلى سكور)
+function impDistinct_(list){ const seen=new Set(), first=[]; list.forEach(c=>{ const k=WA.normA(cleanSender_(c.sender)); if(!seen.has(k)) first.push(c); seen.add(k); }); return first; }
 function impPick_(cand,n,mode){
   if(mode==='equal') return impBalanced_(cand).slice(0,n);
   if(mode==='none') return impDistinct_(cand).slice(0,n);
@@ -7696,7 +7708,7 @@ document.addEventListener('change',e=>{
   if(el.id==='calibFile'&&el.files&&el.files[0]){ const f=el.files[0]; el.value=''; return calibUpload_(S._calibM,f).catch(e=>toast(e.message,true)); }
   if(el.id==='phQ'){ const k=S._phNames&&S._phNames.get(el.value); if(k){ el.value=''; return phProfile_(k); } return; }
   if(el.id==='impDest'){ try{ localStorage.setItem('use_imp_dest',el.value); }catch(e){} return updateImport(); }
-  if(el.id==='impBal'){ try{ localStorage.setItem('use_imp_bal',el.value); }catch(e){} return; }
+  if(el.id==='impBal'){ try{ localStorage.setItem('use_imp_bal2',el.value); }catch(e){} return; }
   if(el.id==='hcFile'&&el.files&&el.files[0]){ const f=el.files[0]; el.value=''; return hcOnFile(f); }
   if(el.dataset&&el.dataset.angrp){ const A=anState(); el.checked?A.groups.add(el.dataset.angrp):A.groups.delete(el.dataset.angrp); return updateAn(); }
   if(el.id==='impFiles'&&el.files&&el.files.length){ const fs=[...el.files]; el.value=''; return impLoadFiles(fs); }
