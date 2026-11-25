@@ -4202,7 +4202,7 @@ function updateImport(){
   $('#impFilters').innerHTML='<div style="display:flex;gap:6px;align-items:center;margin-bottom:8px;flex-wrap:wrap"><b style="font-size:13px">بحث:</b><input type="search" id="impQ" value="'+esc(I.f.q||'')+'" placeholder="اسم، صيدلي، مشرف، فرع، رقم فاتورة، كلمة من النص أو صنف…" style="flex:1;min-width:240px;max-width:560px">'+(I.f.q?'<button class="btn" id="btnImpQX" type="button" aria-label="مسح البحث">✕</button>':'')+'<span class="note" id="impQN" style="margin:0"></span></div>'+
     '<details class="fmore"'+(I.f.cats.size||I.f.sub.size?' open':'')+'><summary>التصنيفات والحالات الدقيقة'+(I.f.cats.size+I.f.sub.size?' ('+(I.f.cats.size+I.f.sub.size)+' محدد)':'')+'</summary><div><b style="font-size:13px">التصنيف:</b> '+cats.map(c=>chip('data-impcat',c.n,c.n,cnt[c.n]||0,I.f.cats.has(c.n))).join('')+chip('data-impcat','__none','غير مصنّف',none,I.f.cats.has('__none'))+'<span class="note"> (بدون اختيار = الكل)</span></div>'+
      '<div style="margin-top:6px"><b style="font-size:13px">الحالة الدقيقة:</b> '+(()=>{ const L=impSubs().map(s=>({s,n:I.cases.filter(c=>subOf_(c).includes(s.n)).length})).filter(x=>x.n); const P=[...new Set(L.map(x=>x.s.p||''))]; return P.map(pp=>(pp?'<span class="note" style="margin:0 4px 0 6px">'+esc(pp)+':</span>':'')+L.filter(x=>(x.s.p||'')===pp).map(x=>chip('data-impsub',x.s.n,x.s.n,x.n,I.f.sub.has(x.s.n))).join('')).join(''); })()+'</div>'+
-    '</details><div style="margin-top:6px"><b style="font-size:13px">المجموعة:</b> '+Object.keys(gcnt).sort().map(g=>chip('data-impgrp',g,g,gcnt[g],I.f.groups.has(g))).join('')+
+    '</details><div style="margin-top:6px"><b style="font-size:13px">المجموعة:</b> '+Object.keys(gcnt).sort().map(g=>chip('data-impgrp',g,grpLabel_(g),gcnt[g],I.f.groups.has(g))).join('')+
     '</div><div style="margin-top:6px"><b style="font-size:13px">مستوى الحل:</b> '+[4,3,2,1,0].map(l=>{ const n=I.cases.filter(c=>(c.lvl||0)===l).length; return n?chip('data-imptier','L'+l,LVL_LETTER[l]+' · '+LVL_SHORT[l],n,I.f.tier.has('L'+l)):''; }).join('')+
     ' '+
     '<span style="display:inline-flex;gap:6px;align-items:center">حدد أفضل <input type="number" id="impTopN" min="1" max="200" value="'+(I.topN||20)+'" style="width:70px"> <button class="btn" id="btnImpTop">تحديد</button> <select id="impBal" title="طريقة التوزيع على المجموعات" style="width:auto">'+[['min','حد أدنى 3 لكل مجموعة'],['equal','بالتساوي بين المجموعات'],['none','بدون توزيع (الأعلى سكور)']].map(o=>'<option value="'+o[0]+'"'+(impBalMode()===o[0]?' selected':'')+'>'+o[1]+'</option>').join('')+'</select></span>'+impTopCatsUI(cats)+impSelDist()+
@@ -5406,7 +5406,7 @@ function updateAn(){
   const chip=(attr,val,label,n,on)=>'<label class="chip'+(on?' on':'')+'"><input type="checkbox" '+attr+'="'+esc(val)+'"'+(on?' checked':'')+'>'+esc(label)+(n!=null?' <b>'+n+'</b>':'')+'</label>';
   const hasHc=!!hcIndex().n;
   let h=(I.cloudMeta?'<div class="banner" style="margin:0 0 10px;background:#eef6ff;border-color:#bcd6f5;color:inherit;display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span><b>🌐 معروض تلقائيًا من آخر استخراج تم رفعه على المنصة</b> — بواسطة: '+esc(I.cloudMeta.by||'—')+' · الفترة '+esc(I.cloudMeta.from||from)+' → '+esc(I.cloudMeta.to||to)+' · '+I.cases.length+' حالة</span><span style="flex:1"></span><button class="btn" id="btnAnCloudRefresh" type="button">تحديث من السحابة</button></div>':'')+
-    '<div class="bar" style="flex-wrap:wrap;gap:8px"><b>الفترة:</b> <span class="mono">'+from+' → '+to+'</span> <b style="margin-inline-start:10px">المجموعات:</b> '+allG.map(g=>chip('data-angrp',g,g,null,A.groups.has(g))).join('')+
+    '<div class="bar" style="flex-wrap:wrap;gap:8px"><b>الفترة:</b> <span class="mono">'+from+' → '+to+'</span> <b style="margin-inline-start:10px">المجموعات:</b> '+allG.map(g=>chip('data-angrp',g,grpLabel_(g),null,A.groups.has(g))).join('')+
     '<span style="flex:1"></span><button class="btn" id="btnAnSave">💾 حفظ ملخص الشهر '+esc(mon)+'</button><button class="btn primary" id="btnAnXlsx">⬇ تصدير Excel</button></div>';
   if(!hasHc) h+='<p class="note" style="color:var(--warn)">⚠️ لم تُرفع قائمة الموظفين بعد (المستخدمون والإعدادات). بدونها تظهر الأسماء كما في الواتساب، ويُعرف المشرف من المنشن فقط، ولا تُحسب ردود Talent ولا نسبة المشاركة.</p>';
   if(A.cat) h+='<p class="note">مفلتر على التصنيف: <b>'+esc(A.cat==='__none'?'غير مصنّف':A.cat)+'</b> <button class="btn" data-ancat="">إلغاء الفلتر</button></p>';
@@ -5985,7 +5985,7 @@ function homeWAHtml_(R,G){
    '</div></div>'+
    (GR.length>1?'<div class="hwa-gc"><h4>مقارنة المجموعات<span class="lg"><span><i style="background:#073958"></i>الحالات</span><span><i style="background:#68b6c4"></i>المشاركون</span></span></h4>'+
     '<div class="hwa-gr hd"><span>المجموعة</span><span>الحالات والمشاركون</span><span>نسبة الرد</span><span class="cv">'+(hasHc?'المشاركة':'بفاتورة')+'</span></div>'+
-    GR.map((g,i)=>'<div class="hwa-gr"><span class="gn"><span dir="auto">'+esc(g.g)+'</span>'+(i===0?'<span class="top">الأعلى</span>':'')+'</span><span class="stk"><span class="ln"><span class="t"><i style="width:'+Math.max(2,Math.round(g.cases*100/mx))+'%;background:#073958"></i></span><b>'+g.cases+' <small>حالة</small></b></span><span class="ln"><span class="t"><i style="width:'+Math.max(2,Math.round(g.ph*100/mp))+'%;background:#68b6c4"></i></span><b>'+g.ph+' <small>صيدلي</small></b></span></span><span class="rt '+rc(g.rate)+'">'+g.rate+'%</span><span class="cv">'+(hasHc?(g.team?pct_(g.part,g.team)+'%':'—'):g.inv+'%')+'</span></div>').join('')+'</div>':'')+
+    GR.map((g,i)=>'<div class="hwa-gr"><span class="gn"><span dir="auto">'+esc(grpLabel_(g.g))+'</span>'+(i===0?'<span class="top">الأعلى</span>':'')+'</span><span class="stk"><span class="ln"><span class="t"><i style="width:'+Math.max(2,Math.round(g.cases*100/mx))+'%;background:#073958"></i></span><b>'+g.cases+' <small>حالة</small></b></span><span class="ln"><span class="t"><i style="width:'+Math.max(2,Math.round(g.ph*100/mp))+'%;background:#68b6c4"></i></span><b>'+g.ph+' <small>صيدلي</small></b></span></span><span class="rt '+rc(g.rate)+'">'+g.rate+'%</span><span class="cv">'+(hasHc?(g.team?pct_(g.part,g.team)+'%':'—'):g.inv+'%')+'</span></div>').join('')+'</div>':'')+
    '<div class="ft"><p class="hnote">نسبة الرد: أخضر 80% فأكثر، برتقالي 70–79%، أحمر أقل من 70%.</p><button class="btn" type="button" data-hwa>'+navIc_('dash')+' التحليل الكامل</button></div></section>';
 }
 
@@ -6006,7 +6006,7 @@ function grpSec_(C,m,D){
   const R=(C.months[m].rows||[]); const G=[...new Set(R.map(r=>r[4]).filter(Boolean))].sort(); if(!G.length) return '';
   const pc=(a,b)=>b?Math.round(a/b*100):0, good=r=>(r[6]||0)>=3;
   const cards=G.map(g=>{ const x=R.filter(r=>r[4]===g); const P=grpPart_(C,m,g); const sups=new Set(x.map(r=>r[10]).filter(Boolean)).size;
-    return '<div class="gcard"><div class="t1"><b dir="auto">'+esc(g)+'</b><span>· '+sups+' مشرف</span></div><div class="kv"><div><b>'+x.length+'</b><small>حالة</small></div><div><b>'+(P?pc(P.yes.length,P.all.length)+'%':'—')+'</b><small>مشاركة</small></div><div><b>'+pc(x.filter(good).length,x.length)+'%</b><small>حل متكامل</small></div></div>'+
+    return '<div class="gcard"><div class="t1"><b dir="auto">'+esc(grpLabel_(g))+'</b><span>· '+sups+' مشرف</span></div><div class="kv"><div><b>'+x.length+'</b><small>حالة</small></div><div><b>'+(P?pc(P.yes.length,P.all.length)+'%':'—')+'</b><small>مشاركة</small></div><div><b>'+pc(x.filter(good).length,x.length)+'%</b><small>حل متكامل</small></div></div>'+
       (canDo('dash.reports')?'<button class="btn" type="button" data-grpreport="'+esc(g)+'">'+ico_('file','sm')+' تقرير المجموعة</button>':'')+'</div>'; }).join('');
   return '<details class="panel fold" data-fold="dgrp"'+foldOpen_('dgrp')+'><summary><span class="ic">'+ico_('grid')+'</span><span>تقارير المجموعات <span class="k">· '+G.length+' مجموعة</span></span>'+ico_('down','chev')+'</summary><div class="fb"><div class="grpcards">'+cards+'</div>'+
     '<p class="note" style="margin:10px 0 0">تقرير المجموعة بنفس شكل تقرير المشرف: البطاقات، مستوى الحلول، المشاركة ومن توقف، الفجوات والتدريب المقترح، ومعه جدول يقارن مشرفي المجموعة.</p></div></details>'; }
@@ -6028,7 +6028,7 @@ async function groupReport_(g){
   const kp=(l,v,s2)=>'<div class="rs-k"><span>'+l+'</span><b>'+v+'</b>'+(s2?'<i>'+s2+'</i>':'')+'</div>';
   const dlt=(a,b)=>b==null?'':(a>b?'▲ ':a<b?'▼ ':'')+'الشهر السابق: '+b;
   const supPart=k=>{ const o=D&&D.sups.find(x=>x.sup===k); return o?pc(o.yes.length,o.all.length)+'%':'—'; };
-  const sheet='<div class="rs" id="grpSheet"><div class="rs-h"><div><div class="rs-k0">USE Community · Talent Management</div><h2>تقرير المجموعة — '+esc(g)+'</h2><div class="rs-sub">'+esc(monthLabelAr(m))+' · '+sups.filter(x=>x.k.indexOf('—')!==0).length+' مشرف · '+brs+' فرع</div></div><div class="rs-meta">أُنشئ '+esc(new Date().toISOString().slice(0,16).replace('T',' '))+'<br>بواسطة '+esc(S.me.name||'')+'</div></div>'+
+  const sheet='<div class="rs" id="grpSheet"><div class="rs-h"><div><div class="rs-k0">USE Community · Talent Management</div><h2>تقرير المجموعة — '+esc(grpLabel_(g))+'</h2><div class="rs-sub">'+esc(monthLabelAr(m))+' · '+sups.filter(x=>x.k.indexOf('—')!==0).length+' مشرف · '+brs+' فرع</div></div><div class="rs-meta">أُنشئ '+esc(new Date().toISOString().slice(0,16).replace('T',' '))+'<br>بواسطة '+esc(S.me.name||'')+'</div></div>'+
     '<div class="rs-kpis">'+kp('حالات المجموعة',R.length,dlt(R.length,pm?RP.length:null))+kp('مشاركة المجموعة',P?pc(P.yes.length,P.all.length)+'%':'—',P?P.yes.length+' من '+P.all.length+' صيدلي':'')+kp('حلول متكاملة (أ + ب)',pc(R.filter(good).length,R.length)+'%',pm?'الشهر السابق: '+pc(RP.filter(good).length,RP.length)+'%':'')+kp('حالات «أ»',lv[0],pc(lv[0],R.length)+'% من الحالات')+kp('معتمدة',R.filter(r=>ap.has(r[0])).length,'')+kp('توقفوا عن المشاركة',P?P.stopped.length:'—','')+'</div>'+
     '<h3>مستوى الحلول</h3><div class="rs-b" style="grid-template-columns:1fr"><i style="display:flex;height:16px;border-radius:8px;overflow:hidden;background:#EEF1F5">'+[[lv[0],'var(--lvl4)'],[lv[1],'var(--lvl3)'],[lv[2],'#E3A13B']].map(([v,c])=>'<u style="width:'+pc(v,R.length)+'%;background:'+c+';display:block;height:100%"></u>').join('')+'</i></div><div class="rs-n" style="margin-top:4px">أ '+lv[0]+' · ب '+lv[1]+' · ج '+lv[2]+' · منتج/منتجان أو بدون '+(lv[3]+lv[4])+'</div>'+
     '<h3>مشرفو المجموعة</h3>'+tbl(['المشرف','الحالات','صيادلة شاركوا','أ','أ + ب','معتمدة','مشاركة الفريق'],sups.map(o=>'<tr><td><b>'+esc(o.k)+'</b></td><td>'+o.n+'</td><td>'+o.ph.size+'</td><td>'+o.a+'</td><td>'+rc(pc(o.g,o.n))+'</td><td>'+o.ap+'</td><td>'+supPart(o.k)+'</td></tr>'))+
@@ -6053,7 +6053,7 @@ function caseGroupFn_(){ const IG=S.inboxGroupMap||{}; let idx=null;
 function dashGroups_(){ const G=new Set(); Object.values(S.inboxGroupMap||{}).forEach(g=>g&&G.add(g)); (S.inbox||[]).forEach(x=>x.group&&G.add(x.group));
   if(S.calib) Object.values(S.calib.months).forEach(M=>(M.rows||[]).forEach(r=>r[4]&&G.add(r[4]))); return [...G].sort(); }
 function dGroupOpts_(){ const sel=$('#dGroup'); if(!sel) return; const G=dashGroups_(); if(S.dashGroup&&!G.includes(S.dashGroup)) G.push(S.dashGroup);
-  const h='<option value="">كل المجموعات</option>'+G.map(g=>'<option value="'+esc(g)+'">'+esc(g)+'</option>').join(''); if(sel.innerHTML!==h) sel.innerHTML=h; sel.value=S.dashGroup||''; sel.hidden=!G.length;
+  const h='<option value="">كل المجموعات</option>'+G.map(g=>'<option value="'+esc(g)+'">'+esc(grpLabel_(g))+'</option>').join(''); if(sel.innerHTML!==h) sel.innerHTML=h; sel.value=S.dashGroup||''; sel.hidden=!G.length;
   const nt=$('#dGroupNote'); if(nt) nt.textContent=S.dashGroup?'اللوحة كلها لمجموعة '+S.dashGroup+' فقط':''; }
 function grpC_(C,g){ if(S._calibG&&S._calibG.src===C&&S._calibG.g===g) return S._calibG.res; const pre=g+'|';
   const fk=o=>{ const r={}; Object.keys(o||{}).forEach(m=>{ r[m]=(o[m]||[]).filter(k=>String(k).indexOf(pre)===0); }); return r; };
@@ -6063,6 +6063,26 @@ function grpC_(C,g){ if(S._calibG&&S._calibG.src===C&&S._calibG.g===g) return S.
   S._calibG={src:C,g,res}; return res; }
 async function calibLoadD_(force){ const C=await calibLoad_(force); return S.dashGroup?grpC_(C,S.dashGroup):C; }
 document.addEventListener('click',e=>{ const card=e.target.closest&&e.target.closest('.binfo[data-bopen]'); if(!card||e.target.closest('button,a,input,select,label')) return; openBadge(card.dataset.bopen); });
+
+/* ---------- v23: رئيس المجموعة (مدير المنطقة) من قائمة الموظفين ---------- */
+// رئيس المجموعة = قيمة عمود «District» في قائمة الموظفين (مثل Dr. Deiaa) للصيادلة المرتبطين بالمجموعة،
+// وإلا من اسم ملف المجموعة «USE Community - D4 (Dr. Deiaa)». يُحفظ على الجهاز ليظهر حتى بدون استخراج محمّل.
+function grpHead_(g){
+  let M=S._gHeadM; if(!M){ try{ M=JSON.parse(localStorage.getItem('use_ghead')||'{}')||{}; }catch(e){ M={}; } S._gHeadM=M; }
+  const I=impState(); const G=Object.keys(I.groupMsgs||{});
+  if(G.length){ let L=[]; try{ L=hcAll(); }catch(e){}
+    const sig=G.join(',')+'|'+L.length+'|'+Object.values(I.groupNames||{}).join(',');
+    if(S._gHeadSig!==sig){ S._gHeadSig=sig; const cnt={}; let ch=false;
+      L.forEach(p=>{ if(!p.group||G.includes(p.group)||p.status==='left') return; let gg=''; try{ gg=hcGroupOf(p); }catch(e){} if(!gg) return; const o=cnt[gg]||(cnt[gg]={}); o[p.group]=(o[p.group]||0)+1; });
+      G.forEach(gg=>{ let h=cnt[gg]?Object.entries(cnt[gg]).sort((a,b)=>b[1]-a[1])[0][0]:'';
+        if(!h){ const m=String((I.groupNames||{})[gg]||'').match(/\(([^)]{2,40})\)/); if(m) h=m[1].replace(/\b\w/g,c=>c.toUpperCase()); }
+        if(h&&M[gg]!==h){ M[gg]=h; ch=true; } });
+      if(ch) try{ localStorage.setItem('use_ghead',JSON.stringify(M)); }catch(e){} } }
+  return M[g]||''; }
+function grpShort_(n){ n=String(n||'').trim(); if(!n) return ''; const ar=/[؀-ۿ]/.test(n);
+  const w=n.replace(/^(dr\.?|د\.?|دكتور|الدكتور)\s*/i,'').split(/\s+/).filter(Boolean); if(!w.length) return '';
+  return (ar?'د. ':'Dr. ')+w[0]; }
+function grpLabel_(g){ const h=grpShort_(grpHead_(g)); return h?g+' ('+h+')':String(g); }
 function v2Click_(t){
   if(t.id==='btnUndoDec'){ decUndo_(); return true; }
   if(t.dataset.hreview!==undefined){ const L=filteredCases().filter(([id])=>statusOf(id)==='Pending'&&!DEC_Q.has(id)); const P=L.length?L:visibleCases().filter(([id])=>statusOf(id)==='Pending'&&!DEC_Q.has(id)); const rd=P.find(([id,c])=>isReady(id,c))||P[0];
