@@ -10,3 +10,7 @@
 
 ## المسؤول
 HENNAWI – Talent Management Senior Supervisor
+
+## سجل التحديثات
+- نوفمبر 2026: إطلاق منصة USE Badges Center
+- نوفمبر 2026: إضافة ملف التعريف README
